@@ -19,6 +19,7 @@ objectives will be listed on the right
 
 * Javascript 
 * Canvas
+* Three.js
 
 ## Implementation Timeline
 

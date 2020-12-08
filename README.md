@@ -20,7 +20,8 @@ objectives will be listed on the right
 * There will be a start, end, and reset button for the game as well.
 * A nav bar will be included with my corresponding Github and LinkedIn links.
 
-![wireframe](/src/assets/wireframe.jpeg)
+
+<img src="src/assets/wireframe.jpeg" width="400">
 
 ## Architecture and Technologies 
 

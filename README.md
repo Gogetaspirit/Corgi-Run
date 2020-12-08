@@ -1,5 +1,10 @@
 # Corgi-Run
 
+## Background
+* Corgi Run is a web game inspired by temple run. Users will play as a "dog" and will have to navigate through obstacles by jumping.
+Similar to temple run, the User will also be able to collect treats which will be added to their score. Once a user hits an obstacle the 
+game will then be over.
+
 ## Functionality & MVP
 
 * Start, pause, and restart functionalities
@@ -15,6 +20,8 @@ objectives will be listed on the right
 * There will be a start, end, and reset button for the game as well.
 * A nav bar will be included with my corresponding Github and LinkedIn links.
 
+![wireframe](/src/assets/wireframe.jpeg)
+
 ## Architecture and Technologies 
 
 * Javascript 
@@ -23,7 +30,13 @@ objectives will be listed on the right
 
 ## Implementation Timeline
 
-Day 1: Setup 
+Day 1: Setup.
 
-Day 2: Researching and implementing game physics
+Day 2: Researching and implementing game sprites.
+
+Day 3: Implementing core game functionalities such as jumping and adding "dog treats" the user can collect.
+
+Day 4: Finishing up core game functionalities and add a boost functionality.
+
+Day 5: Cleaning up project, styling.
 

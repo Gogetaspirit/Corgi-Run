@@ -1,1 +1,1 @@
-{"version":3,"sources":["webpack:///./src/styles/index.scss"],"names":[],"mappings":"AAAA,QACI,kBACA,MACA,OACA,WACA,YACA,oD","file":"main.css","sourcesContent":[".ground {\n    position: absolute;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: url('/src/assets/vegetation_grass_card_03.png');\n}"],"sourceRoot":""}
+{"version":3,"sources":[],"names":[],"mappings":"","file":"main.css","sourceRoot":""}

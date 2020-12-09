@@ -95,6 +95,18 @@ let dog;
 let scoreText;
 let highscoreText;
 let keys = {};
+let dogImg = new Image();
+dogImg.src = 'src/assets/better_puppy_run.png';
+let backgroundImg = new Image();
+backgroundImg.src = 'src/assets/background.jpeg';
+let srcX = 0;
+let srcY = 0;
+let sheetWidth = 859
+let sheetHeight = 64
+let numberOfFrames = 10;
+let widthOfIndivSprite = sheetWidth / numberOfFrames;
+let imgx = 0;
+let imgy = 530;
 
 //event listeners
 document.addEventListener('keydown', function(e) {
@@ -118,14 +130,24 @@ class Dog {
         this.originalHeight = height;
         this.jumpTimer = 0;
         this.onGround = false;
+        this.ogHeight = sheetHeight;
+        this.widthOfIndivSprite = widthOfIndivSprite;
+        this.sheetHeight = sheetHeight
+        this.imgx = imgx
+        this.imgy = imgy
     }
 
 
     Draw(){
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-        ctx.closePath();
+        // ctx.beginPath();
+        // ctx.fillStyle = this.color;
+        // ctx.fillRect(this.x, this.y, this.width, this.height)
+        // ctx.closePath();
+       
+        ctx.drawImage(dogImg, widthOfIndivSprite * srcX, this.sheetHeight * srcY, widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy, this.widthOfIndivSprite, this.sheetHeight)
+        if (srcX < 9) srcX++;
+        else srcX = 1;
+
     }
 
     Animation () {
@@ -138,22 +160,22 @@ class Dog {
         }
 
         if (keys['ShiftLeft'] || keys['KeyS']) {
-            this.height = this.originalHeight / 2;
+            this.sheetHeight = this.ogHeight / 2;
         }
         else {
-            this.height = this.originalHeight;
+            this.sheetHeight = this.ogHeight;
         }
 
-        this.y += this.dy
+        this.imgy += this.dy
 
-        if (this.y + this.height < canvas.height) {
+        if (this.imgy + this.sheetHeight < canvas.height) {
             this.dy += gravity
             this.onGround = false;
         }
         else {
             this.dy = 0;
             this.onGround = true;
-            this.y = canvas.height - this.height
+            this.imgy = canvas.height - this.sheetHeight
         }
        
         
@@ -293,10 +315,10 @@ const update = () => {
         } 
 
         if (
-            dog.x < indivObstacle.x + indivObstacle.width && 
-            dog.x + dog.width > indivObstacle.x &&
-            dog.y < indivObstacle.y + indivObstacle.height && 
-            dog.y + dog.height > indivObstacle.y
+            dog.imgx < indivObstacle.x + indivObstacle.width && 
+            dog.imgx + dog.widthOfIndivSprite > indivObstacle.x &&
+            dog.imgy < indivObstacle.y + indivObstacle.height && 
+            dog.imgy + dog.sheetHeight > indivObstacle.y
             ) 
             {
                 obstacles = [];

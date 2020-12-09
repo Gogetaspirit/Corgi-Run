@@ -86,12 +86,14 @@ let ctx = canvas.getContext('2d')
 // moveDog();
 
 //testing inital render on page
-let obstacles;
+let obstacles = [];
 let gameSpeed;
 let gravity;
 let score;
 let highscore;
 let dog;
+let scoreText;
+let highscoreText;
 let keys = {};
 
 //event listeners
@@ -135,6 +137,15 @@ class Dog {
         
         }
 
+        if (keys['ShiftLeft'] || keys['KeyS']) {
+            this.height = this.originalHeight / 2;
+        }
+        else {
+            this.height = this.originalHeight;
+        }
+
+        this.y += this.dy
+
         if (this.y + this.height < canvas.height) {
             this.dy += gravity
             this.onGround = false;
@@ -144,7 +155,7 @@ class Dog {
             this.onGround = true;
             this.y = canvas.height - this.height
         }
-        this.y += this.dy
+       
         
         this.Draw();
     }
@@ -155,13 +166,83 @@ class Dog {
             this.dy = -this.jumpForce;
         }
         else if (this.jumpTimer > 0 && this.jumpTimer < 15){
-            this.jumpTimer = this.jumpTimer + 1
+            this.jumpTimer++;
             this.dy = -this.jumpForce - (this.jumpTimer / 50)
         }
     }
 }
 
+class Obstacle {
+    constructor(x, y, width, height , color) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.color = color;
 
+        this.dx = -gameSpeed;
+    }
+
+    Update() {
+        this.x += this.dx;
+        this.Draw();
+        this.dx = -gameSpeed;
+    }
+    
+    Draw(){
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.fillRect(this.x, this.y, this.width, this.height)
+        ctx.closePath();
+    }
+}
+
+class ScoreBoard {
+    constructor(text, x, y, alignment, color, size) {
+        this.text = text;
+        this.x = x;
+        this.y = y;
+        this.alignment = alignment;
+        this.color = color;
+        this.size = size;
+    }
+
+    Draw() {
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.font = this.size + "px sans-serif";
+        ctx.textAlign = this.alignment;
+        ctx.fillText(this.text, this.x, this.y);
+        ctx.closePath()
+    }
+
+}
+
+
+
+
+
+//game controls 
+
+function makeObstacles() {
+    let sizeOfObstacle = randomNumber(20, 70)
+
+    //0 is ground unit, 1 is in air unit
+    let type = randomNumber(0, 1)
+    let obstacle = new Obstacle(canvas.width + sizeOfObstacle, canvas.height - sizeOfObstacle,
+        sizeOfObstacle, sizeOfObstacle, '#2484E4');
+
+    if (type === 1) {
+        obstacle.y -= dog.originalHeight - 10;
+    }
+    obstacles.push(obstacle)
+}
+
+
+
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 
 function start (){
@@ -173,17 +254,78 @@ function start (){
     gravity = 1;
     score = 0;
     highscore = 0;
+    if (localStorage.getItem('highscore')) {
+        highscore = localStorage.getItem('highscore')
+    }
 
     dog = new Dog(25, 0, 50, 50, '#FF5858')
+
+    scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
+    highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
     requestAnimationFrame(update);
 }
+
+let initialObstacleSpawn = 100;
+let spawnTimer = initialObstacleSpawn;
+
 
 const update = () => {
     requestAnimationFrame(update);
     // clears canvas before drawing every time
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    spawnTimer--;
+    if (spawnTimer <= 0) {
+        makeObstacles();
+        spawnTimer = initialObstacleSpawn - gameSpeed * 8;
+
+        if (spawnTimer < 60) {
+            spawnTimer = 60;
+        }
+    }
+
+    for (i = 0; i < obstacles.length; i++) {
+        let indivObstacle = obstacles[i];
+
+        if (indivObstacle.x + indivObstacle.width < 0) {
+            //delete it will help will memory and frame issues
+            obstacles.splice(i, 1);
+        } 
+
+        if (
+            dog.x < indivObstacle.x + indivObstacle.width && 
+            dog.x + dog.width > indivObstacle.x &&
+            dog.y < indivObstacle.y + indivObstacle.height && 
+            dog.y + dog.height > indivObstacle.y
+            ) 
+            {
+                obstacles = [];
+                score = 0;
+                spawnTimer = initialObstacleSpawn;
+                gameSpeed = 3;
+            window.localStorage.setItem('highscore', highscore)
+            }
+
+        indivObstacle.Update()
+    }
+
     dog.Animation();
+    score++;
+    scoreText.text = "Score: " + score
+    scoreText.Draw();
+
+    if (score > highscore) {
+        highscore = score;
+        highscoreText.text = "Highscore: " + highscore;
+       
+    }
+
+    highscoreText.Draw()
+
+
+    gameSpeed += 0.003;
 }
+
 
 window.onload = start;
 

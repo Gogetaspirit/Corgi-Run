@@ -1,91 +1,6 @@
 let canvas = document.querySelector('canvas');
 let ctx = canvas.getContext('2d')
 
-
-// canvas.width = 1100;
-// canvas.height = 600;
-// canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black";
-
-// let gamespeed = 2;
-// // let images = {};
-
-// images.dog = new Image();
-// images.dog.src = ''
-// let background = new Image();
-// background.src = "src/assets/background.jpeg"
-
-// const BG = {
-//     //pos on horizontal x axis
-//     x1: 0,
-//     //pos on horizontal x for 2nd background
-//     x2: canvas.width,
-//     y: 0,
-//     width: canvas.width,
-//     height: canvas.height
-// }
-
-// const makeBG = () => {
-//     // if (BG.x1 <= BG.width) BG.x1 = BG.width
-//     // else BG.x1 -= gamespeed;
-//     ctx.drawImage(background, BG.x1, BG.y, BG.width, BG.height)
-// }
-
-
-
-// //the position where frame will be drawn
-// let x = 300;
-// let y = 450;
-// let speed = 15;
-
-// let srcX = 0;
-// let srcY = 0;
-
-// let sheetWidth = 859
-// let sheetHeight = 64
-
-// let numberOfFrames = 10;
-
-// let widthOfIndivSprite = sheetWidth / numberOfFrames;
-
-
-// let startingFrame = 0;
-// let Imgs = {}
-// let dog = new Image();
-// dog.src = "src/assets/better_puppy_run.png"
-
-
-// const drawSprite = (img, srcX, srcY, widthOfSprite, heightOfSprite, x, y, dW, dH) => {
-//     ctx.drawImage(img, srcX, srcY, widthOfSprite, heightOfSprite, x, y, dW, dH)
-// }
-
-// const animationLoop = () => {
-//     ctx.clearRect(0, 0, canvas.width, canvas.height);
-//     makeBG()
-//     drawSprite(dog, widthOfIndivSprite * srcX, sheetHeight * srcY, widthOfIndivSprite, sheetHeight, x, y, widthOfIndivSprite, sheetHeight);
-    
-//     if (srcX < 9) srcX++;
-//     else srcX = 1;
-
-//     //code below makes dog move across the screen
-//     if (x < canvas.width + widthOfIndivSprite) x += speed;
-//     else x = 0 - widthOfIndivSprite;
-// }
-
-// function moveDog() {
-//     window.addEventListener("keydown", (e) => {
-//         animationLoop();
-//     })
-// }
-
-// function initialLoad() {
-//     makeBG();
-//     drawSprite(dog, widthOfIndivSprite * srcX, sheetHeight * srcY, widthOfIndivSprite, sheetHeight, 300, 450, widthOfIndivSprite, sheetHeight)
-// }
-
-// window.onload = initialLoad;
-// moveDog();
-
-//testing inital render on page
 let obstacles = [];
 let gameSpeed;
 let gravity;
@@ -95,10 +10,14 @@ let dog;
 let scoreText;
 let highscoreText;
 let keys = {};
+let catImg = new Image();
+catImg.src = 'src/assets/cat.png'
+let puppySlideImg = new Image();
+puppySlideImg.src = 'src/assets/puppy_slide.png'
 let dogImg = new Image();
 dogImg.src = 'src/assets/better_puppy_run.png';
 let backgroundImg = new Image();
-backgroundImg.src = 'src/assets/background.jpeg';
+backgroundImg.src = 'src/assets/swamp.png';
 let srcX = 0;
 let srcY = 0;
 let sheetWidth = 859
@@ -106,7 +25,11 @@ let sheetHeight = 64
 let numberOfFrames = 10;
 let widthOfIndivSprite = sheetWidth / numberOfFrames;
 let imgx = 0;
-let imgy = 530;
+let imgy = 0;
+
+let puppySheetWidth = 248;
+let puppySheetHeight = 37;
+let widthOfIndivPuppy = puppySheetWidth / 3;
 
 //event listeners
 document.addEventListener('keydown', function(e) {
@@ -116,6 +39,8 @@ document.addEventListener('keydown', function(e) {
 document.addEventListener('keyup', function(e) {
     keys[e.code] = false;
 })
+
+
 
 class Dog {
     constructor(x, y, width, height , color) {
@@ -145,9 +70,17 @@ class Dog {
         // ctx.closePath();
        
         ctx.drawImage(dogImg, widthOfIndivSprite * srcX, this.sheetHeight * srcY, widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy, this.widthOfIndivSprite, this.sheetHeight)
+        console.log(this.sheetHeight) //64
         if (srcX < 9) srcX++;
         else srcX = 1;
 
+    }
+
+    DrawSlide(){
+        ctx.drawImage(puppySlideImg, widthOfIndivPuppy * srcX, puppySheetHeight * srcY, widthOfIndivPuppy, puppySheetHeight, this.imgx, this.imgy, widthOfIndivPuppy, 32)
+        console.log('hi')
+        if (srcX < 1) srcX++;
+        else srcX = 1;
     }
 
     Animation () {
@@ -159,27 +92,32 @@ class Dog {
         
         }
 
-        if (keys['ShiftLeft'] || keys['KeyS']) {
-            this.sheetHeight = this.ogHeight / 2;
-        }
-        else {
-            this.sheetHeight = this.ogHeight;
-        }
+        // if (keys['ShiftLeft'] || keys['KeyS']) {
+        //     this.sheetHeight = this.ogHeight / 2;
+        // }
+        // else {
+        //     this.sheetHeight = this.ogHeight;
+        // }
 
         this.imgy += this.dy
 
-        if (this.imgy + this.sheetHeight < canvas.height) {
+        if (this.imgy + this.sheetHeight < canvas.height - 80) {
             this.dy += gravity
             this.onGround = false;
         }
         else {
             this.dy = 0;
             this.onGround = true;
-            this.imgy = canvas.height - this.sheetHeight
+            this.imgy = canvas.height - this.sheetHeight - 80
         }
-       
+        if (keys['ShiftLeft'] || keys['KeyS']) {
+            this.DrawSlide();
+        }
+        else {
+            this.Draw();
+        }
         
-        this.Draw();
+        
     }
 
     JumpFunction() {
@@ -194,13 +132,17 @@ class Dog {
     }
 }
 
+
+
+
+
 class Obstacle {
-    constructor(x, y, width, height , color) {
+    constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color;
+        
 
         this.dx = -gameSpeed;
     }
@@ -212,12 +154,16 @@ class Obstacle {
     }
     
     Draw(){
-        ctx.beginPath();
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height)
-        ctx.closePath();
+        // ctx.beginPath();
+        // ctx.fillStyle = this.color;
+        // ctx.fillRect(this.x, this.y, this.width, this.height)
+        // ctx.closePath();
+        ctx.drawImage(catImg, this.x, this.y, this.width, this.height)
     }
 }
+
+
+
 
 class ScoreBoard {
     constructor(text, x, y, alignment, color, size) {
@@ -251,8 +197,8 @@ function makeObstacles() {
 
     //0 is ground unit, 1 is in air unit
     let type = randomNumber(0, 1)
-    let obstacle = new Obstacle(canvas.width + sizeOfObstacle, canvas.height - sizeOfObstacle,
-        sizeOfObstacle, sizeOfObstacle, '#2484E4');
+    let obstacle = new Obstacle(canvas.width + sizeOfObstacle, canvas.height - sizeOfObstacle - 80,
+        sizeOfObstacle, sizeOfObstacle);
 
     if (type === 1) {
         obstacle.y -= dog.originalHeight - 10;
@@ -272,7 +218,7 @@ function start (){
     canvas.height = 600;
     canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black";
 
-    gameSpeed = 3;
+    gameSpeed = 6;
     gravity = 1;
     score = 0;
     highscore = 0;
@@ -295,6 +241,8 @@ const update = () => {
     requestAnimationFrame(update);
     // clears canvas before drawing every time
     ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+    ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height)
 
     spawnTimer--;
     if (spawnTimer <= 0) {

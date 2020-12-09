@@ -72,7 +72,6 @@ class Dog {
         // ctx.closePath();
        
         ctx.drawImage(dogImg, widthOfIndivSprite * srcX, this.sheetHeight * srcY, widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy, this.widthOfIndivSprite, this.sheetHeight)
-        console.log(this.sheetHeight) //64
         if (srcX < 9) srcX++;
         else srcX = 1;
 
@@ -189,6 +188,26 @@ class ScoreBoard {
 
 }
 
+let soundImg = new Image();
+soundImg.src = 'src/assets/sound_icon.png'
+let soundSheetWidth = 2001;
+let soundSheetHeight = 1831;
+
+class SoundButton {
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+    Draw() {
+        ctx.drawImage(soundImg, 0, 0, soundSheetWidth, soundSheetHeight, this.x, this.y, this.width, this.height)
+    }
+}
+
+
+
 
 
 
@@ -233,8 +252,21 @@ function start (){
 
     scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
     highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
+    soundControl = new SoundButton(30, 30, 50, 50);
+
     requestAnimationFrame(update);
 }
+
+
+canvas.addEventListener('click', function (e) {
+    // if (e.x > soundControl.x && e.x < soundControl.x + soundControl.width &&
+    //     e.y > soundControl.y && e.y < soundControl.y + soundControl.height
+    // ) {
+    //     console.log('yo what up boi')
+    // }
+    console.log(e.x)
+    console.log(soundControl.width)
+})
 
 let initialObstacleSpawn = 100;
 let spawnTimer = initialObstacleSpawn;
@@ -244,8 +276,8 @@ const update = () => {
     requestAnimationFrame(update);
     // clears canvas before drawing every time
     ctx.clearRect(0, 0, canvas.width, canvas.height)
-
     ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height)
+
 
     spawnTimer--;
     if (spawnTimer <= 0) {
@@ -278,18 +310,6 @@ const update = () => {
                 gameSpeed = 3;
             window.localStorage.setItem('highscore', highscore)
             }
-            // else if (
-            //     dog.imgx < indivObstacle.x + indivObstacle.width &&
-            //     dog.imgx + widthOfIndivPuppy > indivObstacle.x &&
-            //     dog.pupimgy < indivObstacle.y + indivObstacle.height &&
-            //     dog.pupimgy + 32 > indivObstacle.y
-            // ) {
-            // obstacles = [];
-            // score = 0;
-            // spawnTimer = initialObstacleSpawn;
-            // gameSpeed = 3;
-            // window.localStorage.setItem('highscore', highscore)
-            // }
             
 
         indivObstacle.Update()
@@ -299,6 +319,7 @@ const update = () => {
     score++;
     scoreText.text = "Score: " + score
     scoreText.Draw();
+    soundControl.Draw();
 
     if (score > highscore) {
         highscore = score;

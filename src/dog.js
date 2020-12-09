@@ -26,6 +26,7 @@ let numberOfFrames = 10;
 let widthOfIndivSprite = sheetWidth / numberOfFrames;
 let imgx = 0;
 let imgy = 0;
+let pupimgy = 0;
 
 let puppySheetWidth = 248;
 let puppySheetHeight = 37;
@@ -60,6 +61,7 @@ class Dog {
         this.sheetHeight = sheetHeight
         this.imgx = imgx
         this.imgy = imgy
+        this.pupimgy = undefined
     }
 
 
@@ -77,8 +79,7 @@ class Dog {
     }
 
     DrawSlide(){
-        ctx.drawImage(puppySlideImg, widthOfIndivPuppy * srcX, puppySheetHeight * srcY, widthOfIndivPuppy, puppySheetHeight, this.imgx, this.imgy, widthOfIndivPuppy, 32)
-        console.log('hi')
+        ctx.drawImage(puppySlideImg, widthOfIndivPuppy * srcX, puppySheetHeight * srcY, widthOfIndivPuppy, puppySheetHeight, this.imgx, this.imgy, widthOfIndivPuppy, this.sheetHeight)
         if (srcX < 1) srcX++;
         else srcX = 1;
     }
@@ -111,9 +112,11 @@ class Dog {
             this.imgy = canvas.height - this.sheetHeight - 80
         }
         if (keys['ShiftLeft'] || keys['KeyS']) {
+            this.sheetHeight = this.ogHeight / 2;
             this.DrawSlide();
         }
         else {
+            this.sheetHeight = this.ogHeight
             this.Draw();
         }
         
@@ -275,6 +278,19 @@ const update = () => {
                 gameSpeed = 3;
             window.localStorage.setItem('highscore', highscore)
             }
+            // else if (
+            //     dog.imgx < indivObstacle.x + indivObstacle.width &&
+            //     dog.imgx + widthOfIndivPuppy > indivObstacle.x &&
+            //     dog.pupimgy < indivObstacle.y + indivObstacle.height &&
+            //     dog.pupimgy + 32 > indivObstacle.y
+            // ) {
+            // obstacles = [];
+            // score = 0;
+            // spawnTimer = initialObstacleSpawn;
+            // gameSpeed = 3;
+            // window.localStorage.setItem('highscore', highscore)
+            // }
+            
 
         indivObstacle.Update()
     }
@@ -298,5 +314,8 @@ const update = () => {
 
 
 window.onload = start;
+
+
+
 
 

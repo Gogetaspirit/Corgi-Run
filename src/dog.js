@@ -86,7 +86,7 @@ let ctx = canvas.getContext('2d')
 // moveDog();
 
 //testing inital render on page
-
+let obstacles;
 let gameSpeed;
 let gravity;
 let score;
@@ -115,7 +115,7 @@ class Dog {
         this.jumpForce = 15;
         this.originalHeight = height;
         this.jumpTimer = 0;
-        this.onGround = true;
+        this.onGround = false;
     }
 
 
@@ -134,8 +134,17 @@ class Dog {
             this.jumpTimer = 0;
         
         }
+
+        if (this.y + this.height < canvas.height) {
+            this.dy += gravity
+            this.onGround = false;
+        }
+        else {
+            this.dy = 0;
+            this.onGround = true;
+            this.y = canvas.height - this.height
+        }
         this.y += this.dy
-        this.y = canvas.height - this.height
         
         this.Draw();
     }
@@ -165,7 +174,7 @@ function start (){
     score = 0;
     highscore = 0;
 
-    dog = new Dog(25, canvas.height - 150, 50, 50, '#FF5858')
+    dog = new Dog(25, 0, 50, 50, '#FF5858')
     requestAnimationFrame(update);
 }
 

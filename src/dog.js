@@ -277,8 +277,8 @@ function start (){
 
     ctx.drawImage(startImg, 0, 0, canvas.width, canvas.height)
 
-    startDog = new Dog(25, 0, 50, 50)
-    startDog.Draw();
+    // startDog = new Dog(25, 0, 50, 50)
+    // startDog.Draw();
 
     canvas.addEventListener('click', toStart)
 }

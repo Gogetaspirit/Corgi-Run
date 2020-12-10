@@ -20,11 +20,18 @@ let backgroundImg = new Image();
 backgroundImg.src = 'src/assets/swamp.png';
 let srcX = 0;
 let srcY = 0;
-let pupimgy = 0;
 
+let pupimgy = 0;
 let puppySheetWidth = 248;
 let puppySheetHeight = 37;
 let widthOfIndivPuppy = puppySheetWidth / 3;
+
+
+
+let startDx = 0;
+let startDy = 0;
+let startWidth = canvas.width;
+let startHeight = canvas.height;
 
 //event listeners
 document.addEventListener('keydown', function(e) {
@@ -72,6 +79,7 @@ class Dog {
     }
 
     DrawLoopAcrossPage(){
+        //need to revise click start button with math, start button is rendered here as is stretched out to the whole canvas
         if (booleanForLoop === true) {
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(startImg, 0, 0, canvas.width, canvas.height)
@@ -223,14 +231,19 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+
 let audioPlay = true
 
 function toggleAudio(e) {
     if (audioPlay === true) {
-        if (e.x > 28 && e.x < 86 && e.y > 140 && e.y < 199) {
+        let calculate = window.getComputedStyle(canvas)
+        let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
+        let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
+        if (e.x > spaceLeft + soundControl.x && e.x < spaceLeft + soundControl.x + soundControl.width &&
+            e.y > spaceTop + soundControl.y && e.y < spaceTop + soundControl.y + soundControl.height
+            ) {
             document.getElementById("music_bg").pause();
             audioPlay = false;
-            console.log(audioPlay)
             canvas.removeEventListener('click', toggleAudio)
         }
     }
@@ -239,9 +252,13 @@ function toggleAudio(e) {
 function toggleAudioOff(e) {
 
     if (audioPlay === false) {
-        if (e.x > 28 && e.x < 86 && e.y > 140 && e.y < 199) {
+        let calculate = window.getComputedStyle(canvas)
+        let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
+        let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
+        if (e.x > spaceLeft + soundControl.x && e.x < spaceLeft + soundControl.x + soundControl.width &&
+            e.y > spaceTop + soundControl.y && e.y < spaceTop + soundControl.y + soundControl.height
+        ) {
             document.getElementById("music_bg").play();
-            console.log('is this working')
             audioPlay = true;
             canvas.removeEventListener('click', toggleAudioOff)
         }
@@ -250,12 +267,15 @@ function toggleAudioOff(e) {
 
 
 function toStart(e) {
-    console.log(e.x)
-    console.log(e.y)
+    let calculate = window.getComputedStyle(canvas)
+    let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
+    let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
+
+   
     if (e.x > 303 && e.x < 815 &&
         e.y > 288 && e.y < 480
     ) {
-
+        
        
        
 
@@ -297,7 +317,6 @@ let booleanForLoop = true;
 
 
 function test(){
-    console.log('hi')
    startDog.DrawLoopAcrossPage()
 }
 function doggyLoop(){
@@ -313,7 +332,7 @@ function start (){
     
    
 
-    ctx.drawImage(startImg, 0, 0, canvas.width, canvas.height)
+    // ctx.drawImage(startImg, startDx, startDy, startWidth, startHeight)
 
     startDog = new Dog(64, 85.9, 0, 400, 50)
 

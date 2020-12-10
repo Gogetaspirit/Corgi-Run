@@ -44,12 +44,12 @@ document.addEventListener('keyup', function(e) {
 
 
 class Dog {
-    constructor(x, y, width, height , color) {
+    constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.color = color;
+     
         
         this.dy = 0;
         this.jumpForce = 15;
@@ -234,38 +234,66 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function toStart(e) {
+    if (e.x > 303 && e.x < 815 &&
+        e.y > 288 && e.y < 480
+    ) {
+
+       
+
+        gameSpeed = 6;
+        gravity = 1;
+        score = 0;
+        highscore = 0;
+        if (localStorage.getItem('highscore')) {
+            highscore = localStorage.getItem('highscore')
+        }
+
+        dog = new Dog(25, 0, 50, 50)
+
+        scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
+        highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
+        soundControl = new SoundButton(30, 30, 50, 50);
+
+        requestAnimationFrame(update);
+        canvas.removeEventListener('click', toStart)
+    }
+}
+
+
+let startImg = new Image();
+startImg.src = 'src/assets/start.jpeg'
+let startImgWidth = 998;
+let startImgHeight = 980;
+
 
 function start (){
     canvas.width = 1100;
     canvas.height = 600;
     canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black";
 
-    gameSpeed = 6;
-    gravity = 1;
-    score = 0;
-    highscore = 0;
-    if (localStorage.getItem('highscore')) {
-        highscore = localStorage.getItem('highscore')
-    }
+    
+   
 
-    dog = new Dog(25, 0, 50, 50, '#FF5858')
+    ctx.drawImage(startImg, 0, 0, canvas.width, canvas.height)
 
-    scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
-    highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
-    soundControl = new SoundButton(30, 30, 50, 50);
+    startDog = new Dog(25, 0, 50, 50)
+    startDog.Draw();
 
-    requestAnimationFrame(update);
+    canvas.addEventListener('click', toStart)
 }
 
 
+
+
+
+
 canvas.addEventListener('click', function (e) {
-    // if (e.x > soundControl.x && e.x < soundControl.x + soundControl.width &&
-    //     e.y > soundControl.y && e.y < soundControl.y + soundControl.height
-    // ) {
-    //     console.log('yo what up boi')
-    // }
-    console.log(e.x)
-    console.log(soundControl.width)
+    if (e.y < 166 && e.y > 113 && 
+        e.x < 89 && e.x > 30)
+        {
+           
+        }
 })
 
 let initialObstacleSpawn = 100;

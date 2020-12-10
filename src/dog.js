@@ -238,12 +238,6 @@ function toStart(e) {
             highscore = localStorage.getItem('highscore')
         }
 
-        //let sheetWidth = 859
-        // let sheetHeight = 64
-        // let numberOfFrames = 10;
-        // let widthOfIndivSprite = sheetWidth / numberOfFrames;
-        // let imgx = 0;
-        // let imgy = 0;
 
         dog = new Dog(64, 85.9, 0, 0, 50)
 

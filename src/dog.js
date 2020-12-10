@@ -20,12 +20,6 @@ let backgroundImg = new Image();
 backgroundImg.src = 'src/assets/swamp.png';
 let srcX = 0;
 let srcY = 0;
-let sheetWidth = 859
-let sheetHeight = 64
-let numberOfFrames = 10;
-let widthOfIndivSprite = sheetWidth / numberOfFrames;
-let imgx = 0;
-let imgy = 0;
 let pupimgy = 0;
 
 let puppySheetWidth = 248;
@@ -41,14 +35,11 @@ document.addEventListener('keyup', function(e) {
     keys[e.code] = false;
 })
 
-
+let imageSpeed = 6;
 
 class Dog {
-    constructor(x, y, width, height) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
+    constructor(sheetHeight, widthOfIndivSprite, imgx, imgy, height) {
+
      
         
         this.dy = 0;
@@ -66,12 +57,9 @@ class Dog {
 
 
     Draw(){
-        // ctx.beginPath();
-        // ctx.fillStyle = this.color;
-        // ctx.fillRect(this.x, this.y, this.width, this.height)
-        // ctx.closePath();
+        
        
-        ctx.drawImage(dogImg, widthOfIndivSprite * srcX, this.sheetHeight * srcY, widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy, this.widthOfIndivSprite, this.sheetHeight)
+        ctx.drawImage(dogImg, this.widthOfIndivSprite * srcX, this.sheetHeight * srcY, this.widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy, this.widthOfIndivSprite, this.sheetHeight)
         if (srcX < 9) srcX++;
         else srcX = 1;
 
@@ -83,6 +71,18 @@ class Dog {
         else srcX = 1;
     }
 
+    DrawLoopAcrossPage(){
+        if (booleanForLoop === true) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.drawImage(startImg, 0, 0, canvas.width, canvas.height)
+         ctx.drawImage(dogImg, this.widthOfIndivSprite * srcX, this.sheetHeight * srcY, this.widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy,this.widthOfIndivSprite, this.sheetHeight)
+            if (srcX < 9) srcX++;
+            else srcX = 1;
+            if (this.imgx < canvas.width + this.widthOfIndivSprite) this.imgx += imageSpeed;
+            else this.imgx = 0 - this.widthOfIndivSprite
+        }
+    }
+
     Animation () {
         if (keys['Space'] || keys['KeyW']) {
             this.JumpFunction()
@@ -91,13 +91,6 @@ class Dog {
             this.jumpTimer = 0;
         
         }
-
-        // if (keys['ShiftLeft'] || keys['KeyS']) {
-        //     this.sheetHeight = this.ogHeight / 2;
-        // }
-        // else {
-        //     this.sheetHeight = this.ogHeight;
-        // }
 
         this.imgy += this.dy
 
@@ -156,10 +149,6 @@ class Obstacle {
     }
     
     Draw(){
-        // ctx.beginPath();
-        // ctx.fillStyle = this.color;
-        // ctx.fillRect(this.x, this.y, this.width, this.height)
-        // ctx.closePath();
         ctx.drawImage(catImg, this.x, this.y, this.width, this.height)
     }
 }
@@ -249,7 +238,14 @@ function toStart(e) {
             highscore = localStorage.getItem('highscore')
         }
 
-        dog = new Dog(25, 0, 50, 50)
+        //let sheetWidth = 859
+        // let sheetHeight = 64
+        // let numberOfFrames = 10;
+        // let widthOfIndivSprite = sheetWidth / numberOfFrames;
+        // let imgx = 0;
+        // let imgy = 0;
+
+        dog = new Dog(64, 85.9, 0, 0, 50)
 
         scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
         highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
@@ -257,6 +253,8 @@ function toStart(e) {
 
         requestAnimationFrame(update);
         canvas.removeEventListener('click', toStart)
+        booleanForLoop = false;
+        
     }
 }
 
@@ -265,6 +263,17 @@ let startImg = new Image();
 startImg.src = 'src/assets/start.jpeg'
 let startImgWidth = 998;
 let startImgHeight = 980;
+let booleanForLoop = true;
+
+
+
+function test(){
+    console.log('hi')
+   startDog.DrawLoopAcrossPage()
+}
+function doggyLoop(){
+    window.setInterval(test, 1000 / 30)
+}
 
 
 function start (){
@@ -277,8 +286,10 @@ function start (){
 
     ctx.drawImage(startImg, 0, 0, canvas.width, canvas.height)
 
-    // startDog = new Dog(25, 0, 50, 50)
-    // startDog.Draw();
+    startDog = new Dog(64, 85.9, 0, 400, 50)
+
+    window.onload = doggyLoop();
+    
 
     canvas.addEventListener('click', toStart)
 }

@@ -223,11 +223,40 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+let audioPlay = true
+
+function toggleAudio(e) {
+    if (audioPlay === true) {
+        if (e.x > 28 && e.x < 86 && e.y > 140 && e.y < 199) {
+            document.getElementById("music_bg").pause();
+            audioPlay = false;
+            console.log(audioPlay)
+            canvas.removeEventListener('click', toggleAudio)
+        }
+    }
+}
+
+function toggleAudioOff(e) {
+
+    if (audioPlay === false) {
+        if (e.x > 28 && e.x < 86 && e.y > 140 && e.y < 199) {
+            document.getElementById("music_bg").play();
+            console.log('is this working')
+            audioPlay = true;
+            canvas.removeEventListener('click', toggleAudioOff)
+        }
+    }
+}
+
+
 function toStart(e) {
+    console.log(e.x)
+    console.log(e.y)
     if (e.x > 303 && e.x < 815 &&
         e.y > 288 && e.y < 480
     ) {
 
+       
        
 
         gameSpeed = 6;
@@ -245,8 +274,14 @@ function toStart(e) {
         highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
         soundControl = new SoundButton(30, 30, 50, 50);
 
+        if (soundControl) {
+            document.getElementById("music_bg").play();
+        }
+
         requestAnimationFrame(update);
         canvas.removeEventListener('click', toStart)
+
+       
         booleanForLoop = false;
         
     }
@@ -293,19 +328,19 @@ function start (){
 
 
 
-canvas.addEventListener('click', function (e) {
-    if (e.y < 166 && e.y > 113 && 
-        e.x < 89 && e.x > 30)
-        {
-           
-        }
-})
+
 
 let initialObstacleSpawn = 100;
 let spawnTimer = initialObstacleSpawn;
 
 
 const update = () => {
+    if (audioPlay === true) {
+        canvas.addEventListener('click', toggleAudio)
+    }
+    if (audioPlay === false) {
+        canvas.addEventListener('click', toggleAudioOff)
+    }
     requestAnimationFrame(update);
     // clears canvas before drawing every time
     ctx.clearRect(0, 0, canvas.width, canvas.height)

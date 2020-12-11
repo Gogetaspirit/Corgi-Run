@@ -50,7 +50,7 @@ class Dog {
      
         
         this.dy = 0;
-        this.jumpForce = 15;
+        this.jumpHigh = 15;
         this.originalHeight = height;
         this.jumpTimer = 0;
         this.onGround = false;
@@ -127,11 +127,11 @@ class Dog {
     JumpFunction() {
         if (this.onGround === true && this.jumpTimer === 0) {
             this.jumpTimer = 1;
-            this.dy = -this.jumpForce;
+            this.dy = -this.jumpHigh;
         }
         else if (this.jumpTimer > 0 && this.jumpTimer < 15){
             this.jumpTimer++;
-            this.dy = -this.jumpForce - (this.jumpTimer / 50)
+            this.dy = -this.jumpHigh - (this.jumpTimer / 50)
         }
     }
 }
@@ -203,12 +203,6 @@ class SoundButton {
         ctx.drawImage(soundImg, 0, 0, soundSheetWidth, soundSheetHeight, this.x, this.y, this.width, this.height)
     }
 }
-
-
-
-
-
-
 
 //game controls 
 

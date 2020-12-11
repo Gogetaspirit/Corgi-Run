@@ -272,10 +272,6 @@ function toStart(e) {
     let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
     let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
 
-   
-    // if (e.x > 303 && e.x < 815 &&
-    //     e.y > 288 && e.y < 480
-    // ) {
        if (e.x > spaceLeft + startImgDx && e.x < spaceLeft + startImgDx + startImgWidth &&
         e.y > spaceTop + startImgDy && e.y < spaceTop + startImgDy + startImgHeight
         ) {

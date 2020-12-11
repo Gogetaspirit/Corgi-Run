@@ -81,8 +81,9 @@ class Dog {
     DrawLoopAcrossPage(){
         //need to revise click start button with math, start button is rendered here as is stretched out to the whole canvas
         if (booleanForLoop === true) {
+
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(startImg, 0, 0, canvas.width, canvas.height)
+        ctx.drawImage(startImg, startImgDx, startImgDy, startImgWidth, startImgHeight)
          ctx.drawImage(dogImg, this.widthOfIndivSprite * srcX, this.sheetHeight * srcY, this.widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy,this.widthOfIndivSprite, this.sheetHeight)
             if (srcX < 9) srcX++;
             else srcX = 1;
@@ -272,11 +273,12 @@ function toStart(e) {
     let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
 
    
-    if (e.x > 303 && e.x < 815 &&
-        e.y > 288 && e.y < 480
-    ) {
-        
-       
+    // if (e.x > 303 && e.x < 815 &&
+    //     e.y > 288 && e.y < 480
+    // ) {
+       if (e.x > spaceLeft + startImgDx && e.x < spaceLeft + startImgDx + startImgWidth &&
+        e.y > spaceTop + startImgDy && e.y < spaceTop + startImgDy + startImgHeight
+        ) {
        
 
         gameSpeed = 6;
@@ -309,9 +311,11 @@ function toStart(e) {
 
 
 let startImg = new Image();
-startImg.src = 'src/assets/start.jpeg'
-let startImgWidth = 998;
-let startImgHeight = 980;
+startImg.src = 'src/assets/start.png'
+let startImgWidth = 350;
+let startImgHeight = 280;
+let startImgDx = 320;
+let startImgDy = 100;
 let booleanForLoop = true;
 
 
@@ -325,9 +329,9 @@ function doggyLoop(){
 
 
 function start (){
-    canvas.width = 1100;
-    canvas.height = 600;
-    canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black";
+    canvas.width = 1000;
+    canvas.height = 500;
+    canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black; background-color: #556B2F;";
 
     
    

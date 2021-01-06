@@ -261,6 +261,7 @@ function toggleAudioOff(e) {
 }
 
 
+
 function toStart(e) {
     let calculate = window.getComputedStyle(canvas)
     let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
@@ -289,8 +290,10 @@ function toStart(e) {
         if (soundControl) {
             document.getElementById("music_bg").play();
         }
-
+        if (continueTheGame === true) {
         requestAnimationFrame(update);
+        }
+        
         canvas.removeEventListener('click', toStart)
 
        
@@ -337,28 +340,95 @@ function start (){
 }
 
 
+let restartImg = new Image();
+restartImg.src = 'src/assets/reset.jpeg'
+let restartDx = 220;
+let restartDy = 150;
+let restartWidth = 573;
+let restartHeight = 164;
+
+function toRestart(e) {
+    let calculate = window.getComputedStyle(canvas)
+    let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
+    let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
+
+    if (e.x > spaceLeft + restartDx && e.x < spaceLeft + restartDx + restartWidth &&
+        e.y > spaceTop + restartDy && e.y < spaceTop + restartDy + restartHeight
+    ) {
+
+        continueTheGame = true;
+        obstacles = [];
+        spawnTimer = initialObstacleSpawn;
+        gameSpeed = 3;
+        gravity = 1;
+        score = 0;
+        highscore = 0;
+        if (localStorage.getItem('highscore')) {
+            highscore = localStorage.getItem('highscore')
+        }
+
+
+        // dog = new Dog(64, 85.9, 0, 0, 50)
+
+        scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
+        highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
+        soundControl = new SoundButton(30, 30, 50, 50);
+
+        if (soundControl) {
+            document.getElementById("music_bg").play();
+        }
+
+        requestAnimationFrame(update);
+        canvas.removeEventListener('click', toRestart)
+
+
+        booleanForLoop = false;
+    }
+
+}
+
+function restart() {
+    document.getElementById("music_bg").pause();
+    audioPlay = false;
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    canvas.width = 1000;
+    canvas.height = 500;
+    canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black; background-color: #556B2F;";
+
+    ctx.drawImage(restartImg, restartDx, restartDy, restartWidth, restartHeight)
+
+    canvas.addEventListener('click', toRestart)
+    cancelAnimationFrame(update);
+    continueTheGame = false;
+
+}
 
 
 
 
 
 
+let continueTheGame = true;
 let initialObstacleSpawn = 100;
 let spawnTimer = initialObstacleSpawn;
 
 
+
 const update = () => {
+    // console.log(spawnTimer)
     if (audioPlay === true) {
         canvas.addEventListener('click', toggleAudio)
     }
     if (audioPlay === false) {
         canvas.addEventListener('click', toggleAudioOff)
     }
+
+    if (continueTheGame === true) {
     requestAnimationFrame(update);
+    }
     // clears canvas before drawing every time
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height)
-
 
     spawnTimer--;
     if (spawnTimer <= 0) {
@@ -369,6 +439,7 @@ const update = () => {
             spawnTimer = 60;
         }
     }
+
 
     for (i = 0; i < obstacles.length; i++) {
         let indivObstacle = obstacles[i];
@@ -385,16 +456,20 @@ const update = () => {
             dog.imgy + dog.sheetHeight > indivObstacle.y
             ) 
             {
-                obstacles = [];
-                score = 0;
-                spawnTimer = initialObstacleSpawn;
-                gameSpeed = 3;
-            window.localStorage.setItem('highscore', highscore)
+                // obstacles = [];
+                // score = 0;
+                // spawnTimer = initialObstacleSpawn;
+                // gameSpeed = 3;
+            // window.localStorage.setItem('highscore', highscore)
+                restart()
+                continueTheGame = false
             }
             
-
+            if (continueTheGame === true) {
         indivObstacle.Update()
+            }
     }
+    if (continueTheGame === true) {
 
     dog.Animation();
     score++;
@@ -412,6 +487,7 @@ const update = () => {
 
 
     gameSpeed += 0.003;
+}
 }
 
 

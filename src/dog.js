@@ -335,7 +335,7 @@ function start (){
 
     window.onload = doggyLoop();
     
-
+    
     canvas.addEventListener('click', toStart)
 }
 

@@ -341,7 +341,7 @@ function start (){
 
 
 let restartImg = new Image();
-restartImg.src = 'src/assets/reset.jpeg'
+restartImg.src = 'src/assets/reset.png'
 let restartDx = 220;
 let restartDy = 150;
 let restartWidth = 573;
@@ -393,7 +393,7 @@ function restart() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     canvas.width = 1000;
     canvas.height = 500;
-    canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black; background-color: #556B2F;";
+    canvas.style = "position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; margin: auto; border:2px solid black; background-color: white;";
 
     ctx.drawImage(restartImg, restartDx, restartDy, restartWidth, restartHeight)
 

@@ -267,9 +267,9 @@ function toStart(e) {
     let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
     let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
 
-       if (e.x > spaceLeft + startImgDx && e.x < spaceLeft + startImgDx + startImgWidth &&
-        e.y > spaceTop + startImgDy && e.y < spaceTop + startImgDy + startImgHeight
-        ) {
+    //    if (e.x > spaceLeft + startImgDx && e.x < spaceLeft + startImgDx + startImgWidth &&
+    //     e.y > spaceTop + startImgDy && e.y < spaceTop + startImgDy + startImgHeight
+    //     ) {
        
 
         gameSpeed = 6;
@@ -280,6 +280,7 @@ function toStart(e) {
             highscore = localStorage.getItem('highscore')
         }
 
+    document.removeEventListener('keydown', nextScreen)
 
         dog = new Dog(64, 85.9, 0, 0, 50)
 
@@ -289,6 +290,7 @@ function toStart(e) {
 
         if (soundControl) {
             document.getElementById("music_bg").play();
+            document.getElementById("music_bg").volume = 0.3;
         }
         if (continueTheGame === true) {
         requestAnimationFrame(update);
@@ -299,7 +301,7 @@ function toStart(e) {
        
         booleanForLoop = false;
         
-    }
+    // }
 }
 
 
@@ -336,8 +338,42 @@ function start (){
     window.onload = doggyLoop();
     
     
-    canvas.addEventListener('click', toStart)
+    // canvas.addEventListener('click', toStart)
+    canvas.addEventListener('click', directions)
 }
+
+let directionImg = new Image();
+directionImg.src = 'src/assets/directions.png'
+let directionsDx = 0
+let directionsDy = 50
+let directionsWidth = 980
+let directionsHeight = 377
+
+function directions(e) {
+    let calculate = window.getComputedStyle(canvas)
+    let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
+    let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
+    if (e.x > spaceLeft + startImgDx && e.x < spaceLeft + startImgDx + startImgWidth &&
+        e.y > spaceTop + startImgDy && e.y < spaceTop + startImgDy + startImgHeight
+    ) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.drawImage(directionImg, directionsDx, directionsDy, directionsWidth, directionsHeight)
+    canvas.removeEventListener('click', toStart)
+        booleanForLoop = false;
+
+        document.addEventListener('keydown', nextScreen);
+
+    }
+
+}
+
+function nextScreen() {
+    if (keys['Enter']) {
+        toStart()
+    }
+}
+
+
 
 
 let restartImg = new Image();
@@ -380,6 +416,7 @@ function toRestart(e) {
 
         requestAnimationFrame(update);
         canvas.removeEventListener('click', toRestart)
+        document.removeEventListener('keydown', nextScreen)
 
 
         booleanForLoop = false;

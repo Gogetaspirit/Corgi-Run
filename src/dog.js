@@ -84,6 +84,7 @@ class Dog {
 
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.drawImage(startImg, startImgDx, startImgDy, startImgWidth, startImgHeight)
+        
          ctx.drawImage(dogImg, this.widthOfIndivSprite * srcX, this.sheetHeight * srcY, this.widthOfIndivSprite, this.sheetHeight, this.imgx, this.imgy,this.widthOfIndivSprite, this.sheetHeight)
             if (srcX < 9) srcX++;
             else srcX = 1;

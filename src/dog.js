@@ -396,7 +396,7 @@ function toRestart(e) {
         continueTheGame = true;
         obstacles = [];
         spawnTimer = initialObstacleSpawn;
-        gameSpeed = 3;
+        gameSpeed = 6;
         gravity = 1;
         score = 0;
         highscore = 0;
@@ -498,9 +498,10 @@ const update = () => {
                 // score = 0;
                 // spawnTimer = initialObstacleSpawn;
                 // gameSpeed = 3;
-            // window.localStorage.setItem('highscore', highscore)
-                restart()
+                // window.localStorage.setItem('highscore', highscore)
                 continueTheGame = false
+                restart()
+                
             }
             
             if (continueTheGame === true) {
@@ -525,7 +526,7 @@ const update = () => {
 
 
     gameSpeed += 0.003;
-}
+    }
 }
 
 

@@ -393,16 +393,21 @@ function toRestart(e) {
         e.y > spaceTop + restartDy && e.y < spaceTop + restartDy + restartHeight
     ) {
 
+        window.localStorage.setItem('highscore', highscore)
         continueTheGame = true;
         obstacles = [];
         spawnTimer = initialObstacleSpawn;
         gameSpeed = 6;
         gravity = 1;
         score = 0;
-        highscore = 0;
-        if (localStorage.getItem('highscore')) {
+        // highscore = 0;
+        if (localStorage.getItem('highscore') ) {
             highscore = localStorage.getItem('highscore')
         }
+        
+        // if (highscore < localStorage.getItem('highscore')) {
+        //     highscore = localStorage.getItem('highscore')
+        // }
 
 
         // dog = new Dog(64, 85.9, 0, 0, 50)

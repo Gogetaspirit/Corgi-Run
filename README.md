@@ -1,9 +1,9 @@
-# Corgi-Run
+# Dog-Run
 
-## Checkout the Live Game Here! [Corgi Run](https://clee1996.github.io/Dog-Run/)
+## Checkout the Live Game Here! [Dog Run](https://clee1996.github.io/Dog-Run/)
 
 ## Background
-* Corgi Run is a web game inspired by temple run. Users will play as a "dog" and will have to navigate through obstacles by jumping.
+* Dog Run is a web game inspired by temple run. Users will play as a "dog" and will have to navigate through obstacles by jumping.
 Similar to temple run, the User will be able to run and jump. Points are based on time and stored via local storage. Once a user hits an obstacle, the game will then be over.
 
 ![corgigif](src/assets/corgirun.gif)

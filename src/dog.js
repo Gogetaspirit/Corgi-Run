@@ -228,40 +228,40 @@ function randomNumber(min, max) {
 }
 
 
-let audioPlay = true
+// let audioPlay = true
 
-function toggleAudio(e) {
-    if (audioPlay === true) {
-        let calculate = window.getComputedStyle(canvas)
-        let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
-        let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
-        if (e.x > spaceLeft + soundControl.x && e.x < spaceLeft + soundControl.x + soundControl.width &&
-            e.y > spaceTop + soundControl.y && e.y < spaceTop + soundControl.y + soundControl.height
-            ) {
-            document.getElementById("music_bg").pause();
-            audioPlay = false;
-            canvas.removeEventListener('click', toggleAudio)
-        }
-    }
-}
+// function toggleAudio(e) {
+//     if (audioPlay === true) {
+//         let calculate = window.getComputedStyle(canvas)
+//         let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
+//         let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
+//         if (e.x > spaceLeft + soundControl.x && e.x < spaceLeft + soundControl.x + soundControl.width &&
+//             e.y > spaceTop + soundControl.y && e.y < spaceTop + soundControl.y + soundControl.height
+//             ) {
+//             document.getElementById("music_bg").pause();
+//             audioPlay = false;
+//             canvas.removeEventListener('click', toggleAudio)
+//         }
+//     }
+// }
 
-function toggleAudioOff(e) {
+// function toggleAudioOff(e) {
 
-    if (audioPlay === false) {
-        let calculate = window.getComputedStyle(canvas)
-        let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
-        let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
-        if (e.x > spaceLeft + soundControl.x && e.x < spaceLeft + soundControl.x + soundControl.width &&
-            e.y > spaceTop + soundControl.y && e.y < spaceTop + soundControl.y + soundControl.height
-        ) {
-            document.getElementById("music_bg").play();
-            audioPlay = true;
-            canvas.removeEventListener('click', toggleAudioOff)
-        }
-    }
-}
+//     if (audioPlay === false) {
+//         let calculate = window.getComputedStyle(canvas)
+//         let spaceTop = parseInt(calculate.getPropertyValue('margin-top'))
+//         let spaceLeft = parseInt(calculate.getPropertyValue('margin-left'))
+//         if (e.x > spaceLeft + soundControl.x && e.x < spaceLeft + soundControl.x + soundControl.width &&
+//             e.y > spaceTop + soundControl.y && e.y < spaceTop + soundControl.y + soundControl.height
+//         ) {
+//             document.getElementById("music_bg").play();
+//             audioPlay = true;
+//             canvas.removeEventListener('click', toggleAudioOff)
+//         }
+//     }
+// }
 
-
+let audioOn = false;
 
 function toStart(e) {
     let calculate = window.getComputedStyle(canvas)
@@ -272,7 +272,7 @@ function toStart(e) {
     //     e.y > spaceTop + startImgDy && e.y < spaceTop + startImgDy + startImgHeight
     //     ) {
        
-
+        audioOn = true;
         gameSpeed = 6;
         gravity = 1;
         score = 0;
@@ -287,12 +287,29 @@ function toStart(e) {
 
         scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
         highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
-        soundControl = new SoundButton(30, 30, 50, 50);
+        // soundControl = new SoundButton(30, 30, 50, 50);
 
-        if (soundControl) {
+        if (audioOn === true) {
             document.getElementById("music_bg").play();
             document.getElementById("music_bg").volume = 0.3;
         }
+
+    if (audioOn === true) {
+        // canvas.addEventListener('click', toggleAudio)
+        const theSoundButton = document.getElementById("audio-on-button")
+        theSoundButton.addEventListener('click', () => {
+            const musicFile = document.getElementById("music_bg")
+            if (musicFile.paused) {
+                musicFile.play();
+                theSoundButton.src = "src/assets/sound_icon.png"
+            }
+            else {
+                musicFile.pause()
+                theSoundButton.src = "src/assets/audiooff.png"
+
+            }
+        })
+    }
         if (continueTheGame === true) {
         requestAnimationFrame(update);
         }
@@ -414,11 +431,11 @@ function toRestart(e) {
 
         scoreText = new ScoreBoard("Score: " + score, 25, 25, "left", '#212121', "20")
         highscoreText = new ScoreBoard("Highscore: " + highscore, canvas.width - 30, 30, "right", "#212121", "20")
-        soundControl = new SoundButton(30, 30, 50, 50);
+        // soundControl = new SoundButton(30, 30, 50, 50);
 
-        if (soundControl) {
-            document.getElementById("music_bg").play();
-        }
+        // if (soundControl) {
+        //     document.getElementById("music_bg").play();
+        // }
 
         requestAnimationFrame(update);
         canvas.removeEventListener('click', toRestart)
@@ -430,9 +447,11 @@ function toRestart(e) {
 
 }
 
+let onRestart = false;
+
 function restart() {
-    document.getElementById("music_bg").pause();
-    audioPlay = false;
+    // document.getElementById("music_bg").pause();
+    // audioPlay = false;
     ctx.clearRect(0, 0, canvas.width, canvas.height)
     canvas.width = 1000;
     canvas.height = 500;
@@ -440,9 +459,15 @@ function restart() {
 
     ctx.drawImage(restartImg, restartDx, restartDy, restartWidth, restartHeight)
 
+
     canvas.addEventListener('click', toRestart)
+
+
     cancelAnimationFrame(update);
+
     continueTheGame = false;
+
+    onRestart = true
 
 }
 
@@ -458,13 +483,7 @@ let spawnTimer = initialObstacleSpawn;
 
 
 const update = () => {
-    // console.log(spawnTimer)
-    if (audioPlay === true) {
-        canvas.addEventListener('click', toggleAudio)
-    }
-    if (audioPlay === false) {
-        canvas.addEventListener('click', toggleAudioOff)
-    }
+
 
     if (continueTheGame === true) {
     requestAnimationFrame(update);
@@ -519,7 +538,7 @@ const update = () => {
     score++;
     scoreText.text = "Score: " + score
     scoreText.Draw();
-    soundControl.Draw();
+    // soundControl.Draw();
 
     if (score > highscore) {
         highscore = score;
@@ -533,6 +552,8 @@ const update = () => {
     gameSpeed += 0.003;
     }
 }
+
+
 
 
 window.onload = start;

@@ -1,5 +1,6 @@
 body {
-     background-color: lightblue;
+     background-color: #D0D0D0;
+     font-family: 'BioRhyme', serif;
  }
 
 .github {
@@ -13,30 +14,40 @@ body {
     margin-top: 8px;
 }
 
-.title  {
-    margin-left: 20px;
-   margin-top: 15px;
-   margin-right: 20px;
-   font-family: Arial, Helvetica, sans-serif;
-   font-weight: bolder;
+.portfolio {
+     object-fit: cover;
+    width: 40px;
+    margin-left: 10px;
+    margin-top: 8px;
+    margin-right: 50px;
 }
+
+.title  {   
+   margin: auto;
+	width: 8%;
+   font-weight: bolder;
+   font-size: 20px;
+}
+
+.social-links {
+    display: flex;
+   justify-content: center;
+}
+
+
 
 .nav-bar {
-    display: flex;
-    justify-content: center;
+    margin:0px auto;
 }
 
-.controls {
-text-align: center;
-font-family: Arial, Helvetica, sans-serif;
-font-weight: bold;
+#audio-on-button {
+  object-fit: cover;
+  width: 40px;
+  margin-top: 10px;
 }
 
-.instructions {
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-}
+
+
 
 
 
